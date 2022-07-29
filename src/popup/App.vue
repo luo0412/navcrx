@@ -1,19 +1,6 @@
 <template>
   <div class="app">
     <iframe border="none" style="width: 375px;height: 580px;border: none;" src="https://static-59728804-d890-4267-8e45-393e10b3c780.bspapp.com/#/" />
-
-    <!-- <img :src="logo" className="logo" />
-    <div class="btn-wrapper">
-      <div
-        @click="goToOptions"
-        class="crx-btn"
-        :style="{ width: '150px', height: '30px', lineHeight: '30px', cursor: 'pointer' }"
-      >
-        Go to Options Page
-      </div>
-    </div> -->
-
-
   </div>
 </template>
 
