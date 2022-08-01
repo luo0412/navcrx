@@ -1,30 +1,17 @@
 # navcrx
 
-## Project setup
+> chrome插件
 
-```
-yarn install
-```
+- 网址导航
 
-### Compiles and hot-reloads for development
+![image](https://user-images.githubusercontent.com/16240829/182233406-f7bf2e57-0e54-4713-ad91-66d1d20b63e6.png)
 
-```
-yarn serve
-```
+- 代码片段
 
-### Compiles and minifies for production
+![image](https://user-images.githubusercontent.com/16240829/182233574-4f3af64f-bd21-41db-8717-0bf65da9697c.png)
 
-```
-yarn build
-```
+---
 
-### Lints and fixes files
+# 参考 @ref
 
-```
-yarn lint
-```
-
-### Customize configuration
-
-See [Configuration Reference](https://cli.vuejs.org/config/).
-
+- create-crx-app
