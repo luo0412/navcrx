@@ -13,6 +13,10 @@ const copyFiles = [
     from: path.resolve('assets'),
     to: path.resolve('dist/assets'),
   },
+  {
+    from: path.resolve('static'),
+    to: path.resolve('dist/static'),
+  },
 ]
 
 // dev hot reload
