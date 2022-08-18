@@ -12,6 +12,7 @@
 // get static files by chrome.runtime.getURL
 const crxUrl = chrome.runtime.getURL('assets/crx.html')
 
+
 export default {
   name: 'App',
 
@@ -20,6 +21,7 @@ export default {
       crxUrl,
     };
   },
+
 
   methods: {
     goToOptions() {
