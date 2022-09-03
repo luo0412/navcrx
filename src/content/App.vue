@@ -54,7 +54,8 @@ export default {
             shade: false,
             shadeClose: false,
             area: ['375px','700px'],
-            content: "http://static-59728804-d890-4267-8e45-393e10b3c780.bspapp.com/#/pages/test/addNote",
+            content: "https://static-59728804-d890-4267-8e45-393e10b3c780.bspapp.com/#/pages/test/addNote",
+            // content: "/assets/index.html",
             end: () => {
               that.show = true
             }
