@@ -21,7 +21,7 @@
     "48": "assets/logo.png",
     "128": "assets/logo.png"
   },
-  "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
+  "content_security_policy": "script-src 'self' 'unsafe-eval'; https://unpkg.com; object-src 'self'",
   "content_scripts": [
     {
       "matches": [
