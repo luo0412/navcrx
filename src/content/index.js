@@ -72,4 +72,9 @@ window.addEventListener('resize', function () {
   })
 })
 
-createApp(App).mount('#crx-root')
+// import layer from '@layui/layer-vue';
+// import '@layui/layer-vue/lib/index.css';
+
+createApp(App)
+  // .use(layer)
+  .mount('#crx-root')

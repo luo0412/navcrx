@@ -2,38 +2,70 @@
   <div>
 
     <div :style="{
-      width: '120px',
+      width: '85px',
       height: '50px',
       fontSize: '20px',
       lineHeight: '50px',
       borderColor: '#6777ef',
       cursor: 'pointer',
-    }" class="crx-btn" @click="open">
-      预览🚀
-    </div>
+    }" 
+      v-show="show"
 
+      class="crx-btn" 
+      @click="open">
+      {{ previewMd ? '预览🚀' : '记笔记' }}
+    </div>
 
   </div>
 </template>
 
 <script>
+import { layer } from "@layui/layer-vue";
+
 export default {
   name: 'App',
+
   data() {
     return {
-      show: false,
+      show: true,
+      previewMd: false,
       openLink: null,
     }
   },
   methods: {
     open() {
-      if (!show) {
-        
+
+      if (!this.previewMd) {
+
+        // layer.drawer({
+        //     title: "记笔记",
+        //     content: "内容",
+        //     offset: "r"
+        // })
+
+        let that = this
+        that.show = false
+
+        layer.open({
+            type: 2,
+            title: false,
+            resize: true,
+            offset: "r",
+            shade: false,
+            shadeClose: false,
+            area: ['375px','700px'],
+            content: "http://static-59728804-d890-4267-8e45-393e10b3c780.bspapp.com/#/pages/test/addNote",
+            end: () => {
+              that.show = true
+            }
+        })
+
         return 
       }
       if (!this.openLink) {
         return
       }
+
       window.open(this.openLink, "_blank")
     }
   },
@@ -52,12 +84,17 @@ export default {
       return
     }
 
+    if (!url.startsWith("http://static-59728804-d890-4267-8e45-393e10b3c780.bspapp.com")) {
+      this.show = false
+      return
+    }
+
     const rawUrl = document.querySelector("#raw-url").getAttribute("href")
     if (!rawUrl) {
       return
     }
 
-    this.show = true
+    this.previewMd = true
     this.openLink = `https://ui-javascript.github.io/demo-coolma-202205/#/?mdUrl=https://raw.githubusercontent.com${rawUrl.replace(/\/raw\//, "/")}`
   },
 }
