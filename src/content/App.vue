@@ -10,7 +10,6 @@
       cursor: 'pointer',
     }" 
       v-show="show"
-
       class="crx-btn" 
       @click="open">
       {{ previewMd ? '预览🚀' : '记笔记' }}
@@ -21,6 +20,7 @@
 
 <script>
 import { layer } from "@layui/layer-vue";
+const crxUrl = chrome.runtime.getURL('assets/index.html?/#/pages/test/addNote')
 
 export default {
   name: 'App',
@@ -51,14 +51,14 @@ export default {
             title: false,
             resize: true,
             move: true,
-            offset: "rt",
+            offset: "r",
             anim: 2,
             isOutAnim: 2,
             shade: false,
             shadeClose: false,
-            // area: ['375px','700px'],
-            content: "https://static-59728804-d890-4267-8e45-393e10b3c780.bspapp.com/#/pages/test/addNote",
-            // content: "/assets/index.html",
+            area: ['375px', '560px'],
+            // content: "https://static-59728804-d890-4267-8e45-393e10b3c780.bspapp.com/#/pages/test/addNote",
+            content: crxUrl,
             end: () => {
               that.show = true
             }
@@ -75,6 +75,12 @@ export default {
   },
   mounted() {
     let url = window.location.href
+    
+    if (url.includes("static-59728804-d890-4267-8e45-393e10b3c780")) {
+      this.show = false
+      return
+    }
+
     // console.log("url: " + window.location.href)
     if (!url.endsWith(".md")) {
       return
@@ -88,10 +94,6 @@ export default {
       return
     }
 
-    if (!url.startsWith("http://static-59728804-d890-4267-8e45-393e10b3c780.bspapp.com")) {
-      this.show = false
-      return
-    }
 
     const rawUrl = document.querySelector("#raw-url").getAttribute("href")
     if (!rawUrl) {
