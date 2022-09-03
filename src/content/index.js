@@ -73,7 +73,7 @@ window.addEventListener('resize', function () {
 })
 
 // import layer from '@layui/layer-vue';
-// import '@layui/layer-vue/lib/index.css';
+import '@layui/layer-vue/lib/index.css';
 
 createApp(App)
   // .use(layer)
