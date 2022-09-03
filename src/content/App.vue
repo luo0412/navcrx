@@ -56,7 +56,7 @@ export default {
             isOutAnim: 2,
             shade: false,
             shadeClose: false,
-            area: ['375px', '700px'],
+            area: ['375px', '500px'],
             // content: "https://static-59728804-d890-4267-8e45-393e10b3c780.bspapp.com/#/pages/test/addNote",
             content: crxUrl,
             end: () => {
