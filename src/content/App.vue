@@ -48,15 +48,15 @@ export default {
 
         layer.open({
             type: 2,
-            title: false,
+            title: "记笔记",
             resize: true,
             // move: true,
-            offset: "r",
-            // anim: 2,
-            // isOutAnim: 2,
+            offset: "rt",
+            anim: 2,
+            isOutAnim: 2,
             shade: false,
             shadeClose: false,
-            area: ['375px', '600px'],
+            area: ['375px', '700px'],
             // content: "https://static-59728804-d890-4267-8e45-393e10b3c780.bspapp.com/#/pages/test/addNote",
             content: crxUrl,
             end: () => {
