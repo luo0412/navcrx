@@ -1,13 +1,18 @@
 <template>
-  <div v-show="show" :style="{
-    width: '120px',
-    height: '50px',
-    fontSize: '20px',
-    lineHeight: '50px',
-    borderColor: '#6777ef',
-    cursor: 'pointer',
-  }" class="crx-btn" @click="open">
-    Coolma 🚀
+  <div>
+
+    <div :style="{
+      width: '120px',
+      height: '50px',
+      fontSize: '20px',
+      lineHeight: '50px',
+      borderColor: '#6777ef',
+      cursor: 'pointer',
+    }" class="crx-btn" @click="open">
+      预览🚀
+    </div>
+
+
   </div>
 </template>
 
@@ -22,6 +27,10 @@ export default {
   },
   methods: {
     open() {
+      if (!show) {
+        
+        return 
+      }
       if (!this.openLink) {
         return
       }
