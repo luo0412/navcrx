@@ -6,7 +6,9 @@
     "serve": "vue-cli-service build --watch",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "crx": "crx pack dist"
+    "crx": "crx pack dist",
+    "patch:layer-vue": "node scripts/patch-layer-vue.js",
+    "postinstall": "npm run patch:layer-vue"
   },
   "dependencies": {
     "@layui/layer-vue": "^2.4.8",
