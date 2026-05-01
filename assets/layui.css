@@ -1888,7 +1888,7 @@
     --global-checked-color
   ) !important;
 }
-h1,
+/* h1,
 h2,
 h3,
 h4,
@@ -1902,7 +1902,7 @@ body {
 }
 li {
   list-style: none;
-}
+} */
 .layui-inline {
   position: relative;
   display: inline-block;
