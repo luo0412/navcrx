@@ -8,6 +8,8 @@
       @pointermove="onPointerMove"
       @pointerup="onPointerUp"
       @pointercancel="onPointerCancel"
+      @mousemove="handleMouseMove"
+      @mouseleave="handleMouseLeave"
       @click="open">
       {{ buttonContent }}
     </div>
@@ -37,6 +39,8 @@ export default {
         top: 100,
         left: 20,
       },
+      rotateX: 0,
+      rotateY: 0,
     }
   },
   computed: {
@@ -96,6 +100,9 @@ export default {
         touchAction: 'none',
         userSelect: 'none',
         textAlign: 'center',
+        transform: `perspective(1000px) rotateX(${this.rotateX}deg) rotateY(${this.rotateY}deg)`,
+        transition: 'transform 0.25s ease-out, background-color 0.15s ease-in-out',
+        willChange: 'transform',
       };
     },
   },
@@ -167,6 +174,24 @@ export default {
           // ignore invalid stored value
         }
       }
+    },
+    handleMouseMove(event) {
+      if (this.pointerDragged) {
+        return;
+      }
+
+      const rect = event.currentTarget.getBoundingClientRect();
+      const centerX = rect.left + rect.width / 2;
+      const centerY = rect.top + rect.height / 2;
+      const percentX = (event.clientX - centerX) / (rect.width / 2);
+      const percentY = (event.clientY - centerY) / (rect.height / 2);
+      const deg = 15;
+      this.rotateY = Math.max(-1, Math.min(1, percentX)) * deg;
+      this.rotateX = -Math.max(-1, Math.min(1, percentY)) * deg;
+    },
+    handleMouseLeave() {
+      this.rotateX = 0;
+      this.rotateY = 0;
     },
     open() {
       if (this.pointerDragged) {
