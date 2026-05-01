@@ -33,5 +33,6 @@ export default {
 </script>
 
 <style lang="less" scoped>
+// @import '../style/layui.css';
 @import "../style/popup.less";
 </style>

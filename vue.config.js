@@ -1,6 +1,7 @@
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const path = require('path')
 const ExtensionReloader = require('webpack-ext-reloader')
+const webpack = require('webpack')
 
 const isDev = process.env.NODE_ENV === 'development'
 // copy file to dist
@@ -57,6 +58,11 @@ module.exports = {
       new CopyWebpackPlugin({
         patterns: copyFiles
       }),
+      // 排除 layer-vue 的 CSS，让它通过 manifest.json 的 content_scripts.css 加载
+      new webpack.NormalModuleReplacementPlugin(
+        /@layui\/layer-vue.*index\.css/,
+        path.resolve(__dirname, 'src/style/layui.css')
+      ),
       ...hotReload
     ],
   },

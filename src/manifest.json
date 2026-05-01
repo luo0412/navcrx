@@ -1,31 +1,38 @@
 {
-  "manifest_version": 2,
+  "manifest_version": 3,
   "name": "navcrx",
   "description": "常用网址导航+代码片段搜索",
   "version": "1.0.0",
-  "browser_action": {
+  "action": {
     "default_title": "navcrx",
-    "default_icon": "assets/logo.png",
+    "default_icon": {
+      "16": "assets/logo.png",
+      "48": "assets/logo.png",
+      "128": "assets/logo.png"
+    },
     "default_popup": "pages/popup.html"
   },
   "permissions": [
+    "activeTab"
+  ],
+  "host_permissions": [
     "<all_urls>"
   ],
   "background": {
-    "scripts": [
-      "background.js"
-    ]
+    "service_worker": "background.js"
   },
   "icons": {
     "16": "assets/logo.png",
     "48": "assets/logo.png",
     "128": "assets/logo.png"
   },
-  "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
   "content_scripts": [
     {
       "matches": [
-        "*://*/*"
+        "<all_urls>"
+      ],
+        "css": [
+        "assets/layui.css"
       ],
       "js": [
         "content.js"
@@ -33,8 +40,18 @@
       "run_at": "document_end"
     }
   ],
-  "options_page": "pages/options.html",
+  "options_ui": {
+    "page": "pages/options.html",
+    "open_in_tab": false
+  },
   "web_accessible_resources": [
-    "assets/*"
+    {
+      "resources": [
+        "assets/*"
+      ],
+      "matches": [
+        "<all_urls>"
+      ]
+    }
   ]
 }
