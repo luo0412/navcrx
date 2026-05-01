@@ -1,21 +1,7 @@
 <template>
   <div>
 
-    <div :style="{
-      position: 'fixed',
-      top: position.top + 'px',
-      left: position.left + 'px',
-      width: '72px',
-      height: '34px',
-      padding: '0 6px',
-      fontSize: '14px',
-      lineHeight: '34px',
-      borderColor: '#6777ef',
-      cursor: 'pointer',
-      zIndex: 9999,
-      touchAction: 'none',
-      userSelect: 'none',
-    }" 
+<div :style="buttonStyle"
       v-show="show"
       class="crx-btn" 
       @pointerdown="onPointerDown"
@@ -23,7 +9,7 @@
       @pointerup="onPointerUp"
       @pointercancel="onPointerCancel"
       @click="open">
-      {{ previewMd ? '预览🚀' : '记笔记' }}
+      {{ buttonContent }}
     </div>
 
   </div>
@@ -53,6 +39,66 @@ export default {
       },
     }
   },
+  computed: {
+    edgeThreshold() {
+      return 8;
+    },
+    smallSize() {
+      return 30;
+    },
+    isLeftEdge() {
+      return this.position.left <= this.edgeThreshold;
+    },
+    isRightEdge() {
+      return this.position.left >= window.innerWidth - 72 - this.edgeThreshold;
+    },
+    isTopEdge() {
+      return this.position.top <= this.edgeThreshold;
+    },
+    isBottomEdge() {
+      return this.position.top >= window.innerHeight - 34 - this.edgeThreshold;
+    },
+    isEdge() {
+      return this.isLeftEdge || this.isRightEdge || this.isTopEdge || this.isBottomEdge;
+    },
+    buttonContent() {
+      if (this.isLeftEdge) {
+        return '▶';
+      }
+      if (this.isRightEdge) {
+        return '◀';
+      }
+      if (this.isTopEdge) {
+        return '▼';
+      }
+      if (this.isBottomEdge) {
+        return '▲';
+      }
+      return this.previewMd ? '预览🚀' : '记笔记';
+    },
+    buttonStyle() {
+      const width = this.isEdge ? this.smallSize : 72;
+      const height = this.isEdge ? this.smallSize : 34;
+      const left = this.isRightEdge ? window.innerWidth - width : Math.max(0, this.position.left);
+      const top = this.isBottomEdge ? window.innerHeight - height : Math.max(0, this.position.top);
+      return {
+        position: 'fixed',
+        top: top + 'px',
+        left: left + 'px',
+        width: width + 'px',
+        height: height + 'px',
+        padding: this.isEdge ? '0' : '0 6px',
+        fontSize: this.isEdge ? '12px' : '16px',
+        lineHeight: height + 'px',
+        borderColor: '#6777ef',
+        cursor: 'pointer',
+        zIndex: 9999,
+        touchAction: 'none',
+        userSelect: 'none',
+        textAlign: 'center',
+      };
+    },
+  },
   methods: {
     onPointerDown(event) {
       this.pointerStartX = event.clientX;
@@ -76,8 +122,8 @@ export default {
       if (this.pointerDragged) {
         const nextLeft = this.pointerStartLeft + dx;
         const nextTop = this.pointerStartTop + dy;
-        this.position.left = Math.max(0, Math.min(window.innerWidth - 85, nextLeft));
-        this.position.top = Math.max(0, Math.min(window.innerHeight - 50, nextTop));
+        this.position.left = Math.max(0, Math.min(window.innerWidth - 72, nextLeft));
+        this.position.top = Math.max(0, Math.min(window.innerHeight - 34, nextTop));
       }
     },
     onPointerUp() {
