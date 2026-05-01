@@ -2,15 +2,26 @@
   <div>
 
     <div :style="{
-      width: '85px',
-      height: '50px',
-      fontSize: '20px',
-      lineHeight: '50px',
+      position: 'fixed',
+      top: position.top + 'px',
+      left: position.left + 'px',
+      width: '72px',
+      height: '34px',
+      padding: '0 6px',
+      fontSize: '14px',
+      lineHeight: '34px',
       borderColor: '#6777ef',
       cursor: 'pointer',
+      zIndex: 9999,
+      touchAction: 'none',
+      userSelect: 'none',
     }" 
       v-show="show"
       class="crx-btn" 
+      @pointerdown="onPointerDown"
+      @pointermove="onPointerMove"
+      @pointerup="onPointerUp"
+      @pointercancel="onPointerCancel"
       @click="open">
       {{ previewMd ? '预览🚀' : '记笔记' }}
     </div>
@@ -30,10 +41,92 @@ export default {
       show: true,
       previewMd: false,
       openLink: null,
+      pointerStartX: null,
+      pointerStartY: null,
+      pointerStartLeft: null,
+      pointerStartTop: null,
+      pointerDragged: false,
+      pointerThreshold: 6,
+      position: {
+        top: 100,
+        left: 20,
+      },
     }
   },
   methods: {
+    onPointerDown(event) {
+      this.pointerStartX = event.clientX;
+      this.pointerStartY = event.clientY;
+      this.pointerStartLeft = this.position.left;
+      this.pointerStartTop = this.position.top;
+      this.pointerDragged = false;
+      if (event.target.setPointerCapture) {
+        event.target.setPointerCapture(event.pointerId);
+      }
+    },
+    onPointerMove(event) {
+      if (this.pointerStartX === null || this.pointerStartY === null) {
+        return;
+      }
+      const dx = event.clientX - this.pointerStartX;
+      const dy = event.clientY - this.pointerStartY;
+      if (!this.pointerDragged && (Math.abs(dx) > this.pointerThreshold || Math.abs(dy) > this.pointerThreshold)) {
+        this.pointerDragged = true;
+      }
+      if (this.pointerDragged) {
+        const nextLeft = this.pointerStartLeft + dx;
+        const nextTop = this.pointerStartTop + dy;
+        this.position.left = Math.max(0, Math.min(window.innerWidth - 85, nextLeft));
+        this.position.top = Math.max(0, Math.min(window.innerHeight - 50, nextTop));
+      }
+    },
+    onPointerUp() {
+      if (this.pointerDragged) {
+        this.savePosition();
+      }
+      this.pointerStartX = null;
+      this.pointerStartY = null;
+      this.pointerStartLeft = null;
+      this.pointerStartTop = null;
+    },
+    onPointerCancel() {
+      this.pointerStartX = null;
+      this.pointerStartY = null;
+      this.pointerStartLeft = null;
+      this.pointerStartTop = null;
+      this.pointerDragged = false;
+    },
+    savePosition() {
+      const payload = { left: this.position.left, top: this.position.top };
+      if (window.chrome && chrome.storage && chrome.storage.local) {
+        chrome.storage.local.set({ navcrxButtonPosition: payload });
+      } else {
+        localStorage.setItem('navcrxButtonPosition', JSON.stringify(payload));
+      }
+    },
+    loadPosition() {
+      if (window.chrome && chrome.storage && chrome.storage.local) {
+        chrome.storage.local.get(['navcrxButtonPosition'], (result) => {
+          if (result && result.navcrxButtonPosition) {
+            this.position = result.navcrxButtonPosition;
+          }
+        });
+      } else {
+        try {
+          const raw = localStorage.getItem('navcrxButtonPosition');
+          if (raw) {
+            this.position = JSON.parse(raw);
+          }
+        } catch (error) {
+          // ignore invalid stored value
+        }
+      }
+    },
     open() {
+      if (this.pointerDragged) {
+        this.pointerDragged = false;
+        return;
+      }
 
       if (!this.previewMd) {
 
@@ -74,6 +167,8 @@ export default {
     }
   },
   mounted() {
+    this.loadPosition();
+
     let url = window.location.href
     
     if (url.includes("static-59728804-d890-4267-8e45-393e10b3c780")) {
